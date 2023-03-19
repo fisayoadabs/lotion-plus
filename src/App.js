@@ -1,5 +1,7 @@
+import root from "./index.js"
+
 function App() {
-  return <h1>Lotion</h1>;
+  return <>{<root />}</>;
 }
 
 export default App;
