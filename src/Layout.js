@@ -5,8 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import { currentDate } from "./utils";
 
 const localStorageKey = "lotion-v1";
-
-function Layout() {
+function Layout({ logOut, profile }) {
   const navigate = useNavigate();
   const mainContainerRef = useRef(null);
   const [collapse, setCollapse] = useState(false);
@@ -73,42 +72,51 @@ function Layout() {
     setCurrentNote(0);
   };
 
-  return (
-    <div id="container">
-      <header>
-        <aside>
-          <button id="menu-button" onClick={() => setCollapse(!collapse)}>
-            &#9776;
-          </button>
-        </aside>
-        <div id="app-header">
-          <h1>
-            <Link to="/notes">Lotion</Link>
-          </h1>
-          <h6 id="app-moto">Like Notion, but worse.</h6>
-        </div>
-        <aside>&nbsp;</aside>
-      </header>
-      <div id="main-container" ref={mainContainerRef}>
-        <aside id="sidebar" className={collapse ? "hidden" : null}>
+
+
+  const storeName = localStorage.setItem("username", profile.name);
+  const userName = localStorage.getItem("username");
+    return (
+      <div>
+        
+        <div id="container">
           <header>
-            <div id="notes-list-heading">
-              <h2>Notes</h2>
-              <button id="new-note-button" onClick={addNote}>
-                +
+            <aside>
+              <button id="menu-button" onClick={() => setCollapse(!collapse)}>
+                &#9776;
               </button>
+            </aside>
+            <div id="app-header">
+              <h1>
+                <Link to="/notes">Lotion</Link>
+              </h1>
+              <h6 id="app-moto">Like Notion, but worse.</h6>
             </div>
+            <aside>
+              <button onClick={logOut}><strong>{userName} (Log-out)</strong></button>
+            </aside>
           </header>
-          <div id="notes-holder">
-            <NoteList notes={notes} />
+          <div id="main-container" ref={mainContainerRef}>
+            <aside id="sidebar" className={collapse ? "hidden" : null}>
+              <header>
+                <div id="notes-list-heading">
+                  <h2>Notes</h2>
+                  <button id="new-note-button" onClick={addNote}>
+                    +
+                  </button>
+                </div>
+              </header>
+              <div id="notes-holder">
+                <NoteList notes={notes} />
+              </div>
+            </aside>
+            <div id="write-box">
+              <Outlet context={[notes, saveNote, deleteNote]} />
+            </div>
           </div>
-        </aside>
-        <div id="write-box">
-          <Outlet context={[notes, saveNote, deleteNote]} />
         </div>
       </div>
-    </div>
-  );
+    );
 }
 
 export default Layout;
