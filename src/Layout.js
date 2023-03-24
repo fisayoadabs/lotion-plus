@@ -81,7 +81,7 @@ function Layout({ logOut, profile, user }) {
 
   const deleteNote = async (id, index) => {
     
-    const rev = await fetch(`https://7upmz5bg24k365nnapxv7ypomi0dqkxj.lambda-url.ca-central-1.on.aws?email=${profile.email}&id=${id}`,
+    const rev = await fetch(`https://7upmz5bg24k365nnapxv7ypomi0dqkxj.lambda-url.ca-central-1.on.aws`,
     {
     method: "DELETE",
     headers:{
@@ -89,14 +89,13 @@ function Layout({ logOut, profile, user }) {
       "email": profile.email,
       "token": user.access_token,
     },
-    
+    body: JSON.stringify({email: profile.email, id: id})
     }
     );
-    //if( rev.status === 200){
-      setNotes([...notes.slice(0, index), ...notes.slice(index + 1)]);
-      setCurrentNote(0);
-      setEditMode(false);
-    //}
+    
+    setNotes([...notes.slice(0, index), ...notes.slice(index + 1)]);
+    setCurrentNote(0);
+    setEditMode(false);
     console.log(rev.status);
   };
 

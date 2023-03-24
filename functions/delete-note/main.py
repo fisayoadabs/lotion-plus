@@ -5,8 +5,10 @@ dynamodb = boto3.resource("dynamodb")
 table = dynamodb.Table("notes-30141921")
 
 def delete_note_handler(event, context):
-    email = event["queryStringParameters"]["email"]
-    id = event["queryStringParameters"]["id"]
+    body = json.loads(event["body"])
+    
+    id = body["id"]
+    email = body["email"]
 
     try:
         res = table.delete_item(Key={
