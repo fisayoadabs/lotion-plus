@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import { currentDate } from "./utils";
 
 const localStorageKey = "lotion-v1";
-function Layout({ logOut, profile }) {
+function Layout({ logOut, profile, user }) {
   const navigate = useNavigate();
   const mainContainerRef = useRef(null);
   const [collapse, setCollapse] = useState(false);
@@ -41,7 +41,7 @@ function Layout({ logOut, profile }) {
     navigate(`/notes/${currentNote + 1}/edit`);
   }, [notes]);
 
-  const saveNote = (note, index) => {
+  const saveNote = async (note, index) => {
     note.body = note.body.replaceAll("<p><br></p>", "");
     setNotes([
       ...notes.slice(0, index),
@@ -50,6 +50,22 @@ function Layout({ logOut, profile }) {
     ]);
     setCurrentNote(index);
     setEditMode(false);
+
+    var res = await fetch(
+      `https://ls3njoflzw6ebgjzpdk4lmgs640dqmjj.lambda-url.ca-central-1.on.aws?email=${profile.email}&id=${note.id}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "email": profile.email,
+          "token": user.access_token,
+        },
+        body: JSON.stringify({ ...note, email: profile.email }),
+      }
+    );
+
+    // const jsonRes = await res.json();
+    // console.log(jsonRes)
   };
 
   const deleteNote = (index) => {

@@ -43,7 +43,7 @@ function App() {
       <div>
           {profile ? (
               <div>
-                <Layout logOut={logOut} profile={profile}/>
+                <Layout logOut={logOut} profile={profile} user={user}/>
               </div>
           ) : (
             <>
