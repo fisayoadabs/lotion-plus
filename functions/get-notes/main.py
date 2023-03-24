@@ -9,7 +9,7 @@ def get_notes_handler(event, context):
     email = event["queryStringParameters"]["email"]
 
     try:
-        res = table.query(KeyConditionExpression=Key("eamil").eq(email))
+        res = table.query(KeyConditionExpression=Key("email").eq(email))
         return{
             "statusCode": 200,
             "body": json.dumps(res["Items"])

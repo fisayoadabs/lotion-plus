@@ -92,11 +92,11 @@ function Layout({ logOut, profile, user }) {
     
     }
     );
-    if( rev.status === 200){
+    //if( rev.status === 200){
       setNotes([...notes.slice(0, index), ...notes.slice(index + 1)]);
       setCurrentNote(0);
       setEditMode(false);
-    }
+    //}
     console.log(rev.status);
   };
 
