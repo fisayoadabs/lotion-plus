@@ -16,8 +16,8 @@ provider "aws" {
 
 
 
-resource "aws_dynamodb_table" "notes-30141921" {
-  name         = "notes-30141921"
+resource "aws_dynamodb_table" "lotion-30141921" {
+  name         = "lotion-30141921"
   billing_mode = "PROVISIONED"
 
   # up to 8KB read per second (eventually consistent)
@@ -100,7 +100,7 @@ resource "aws_iam_policy" "logs_all" {
         "dynamodb:Query",
         "dynamodb:DeleteItem"
       ],
-      "Resource": ["arn:aws:logs:*:*:*", "${aws_dynamodb_table.notes-30141921.arn}"],
+      "Resource": ["arn:aws:logs:*:*:*", "${aws_dynamodb_table.lotion-30141921.arn}"],
       "Effect": "Allow"
     }
   ]
@@ -225,6 +225,6 @@ output "lambda_url_delete_note" {
 
 
 # Function URLs
-# lambda_url_delete_note = "https://7upmz5bg24k365nnapxv7ypomi0dqkxj.lambda-url.ca-central-1.on.aws/"
-# lambda_url_get_notes = "https://rszorazlzvi352fbcodo7geuzq0lwlve.lambda-url.ca-central-1.on.aws/"
-# lambda_url_save_note = "https://ls3njoflzw6ebgjzpdk4lmgs640dqmjj.lambda-url.ca-central-1.on.aws/"
+# lambda_url_delete_note = "https://vc2mylkg6qpxfd3hf5v6kipzay0xorcr.lambda-url.ca-central-1.on.aws/"
+# lambda_url_get_notes = "https://olhgcz7jxoz4k4fiuiqz3jh4ia0mifov.lambda-url.ca-central-1.on.aws/"
+# lambda_url_save_note = "https://sgmckt35czqg6a6emcluish3h40vdxyt.lambda-url.ca-central-1.on.aws/"

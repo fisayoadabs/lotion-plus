@@ -3,7 +3,7 @@ import boto3
 from boto3.dynamodb.conditions import Key
 
 dynamodb = boto3.resource("dynamodb")
-table = dynamodb.Table("notes-30141921")
+table = dynamodb.Table("lotion-30141921")
 
 def get_notes_handler(event, context):
     email = event["queryStringParameters"]["email"]

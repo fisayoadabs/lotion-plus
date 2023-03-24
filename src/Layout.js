@@ -52,13 +52,12 @@ function Layout({ logOut, profile, user }) {
     setEditMode(false);
 
     var res = await fetch(
-      `https://ls3njoflzw6ebgjzpdk4lmgs640dqmjj.lambda-url.ca-central-1.on.aws?email=${profile.email}&id=${note.id}`,
+      `https://sgmckt35czqg6a6emcluish3h40vdxyt.lambda-url.ca-central-1.on.aws?email=${profile.email}&id=${note.id}`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           email: profile.email,
-          token: user.access_token,
         },
         body: JSON.stringify({ ...note, email: profile.email }),
       }
@@ -72,13 +71,12 @@ function Layout({ logOut, profile, user }) {
     const getNoteEffect = async () => {
       if (profile.email) {
         const rev = await fetch(
-          `https://rszorazlzvi352fbcodo7geuzq0lwlve.lambda-url.ca-central-1.on.aws?email=${profile.email}`,
+          `https://olhgcz7jxoz4k4fiuiqz3jh4ia0mifov.lambda-url.ca-central-1.on.aws?email=${profile.email}`,
           {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
               email: profile.email,
-              token: user.access_token,
             },
           }
         );
@@ -91,13 +89,12 @@ function Layout({ logOut, profile, user }) {
 
   const deleteNote = async (id, index) => {
     const rev = await fetch(
-      `https://7upmz5bg24k365nnapxv7ypomi0dqkxj.lambda-url.ca-central-1.on.aws`,
+      `https://vc2mylkg6qpxfd3hf5v6kipzay0xorcr.lambda-url.ca-central-1.on.aws`,
       {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           email: profile.email,
-          token: user.access_token,
         },
         body: JSON.stringify({ email: profile.email, id: id }),
       }
