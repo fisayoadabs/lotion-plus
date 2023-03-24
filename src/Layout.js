@@ -57,8 +57,8 @@ function Layout({ logOut, profile, user }) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "email": profile.email,
-          "token": user.access_token,
+          email: profile.email,
+          token: user.access_token,
         },
         body: JSON.stringify({ ...note, email: profile.email }),
       }
@@ -69,9 +69,19 @@ function Layout({ logOut, profile, user }) {
   };
 
   useEffect(() => {
-    const getNoteEffect = async ()=>{
-      if (profile.email){
-        const rev = await fetch(`https://rszorazlzvi352fbcodo7geuzq0lwlve.lambda-url.ca-central-1.on.aws?email=${profile.email}`);
+    const getNoteEffect = async () => {
+      if (profile.email) {
+        const rev = await fetch(
+          `https://rszorazlzvi352fbcodo7geuzq0lwlve.lambda-url.ca-central-1.on.aws?email=${profile.email}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              email: profile.email,
+              token: user.access_token,
+            },
+          }
+        );
         const notes = await rev.json();
         setNotes(notes);
       }
@@ -80,19 +90,19 @@ function Layout({ logOut, profile, user }) {
   }, [profile.email]);
 
   const deleteNote = async (id, index) => {
-    
-    const rev = await fetch(`https://7upmz5bg24k365nnapxv7ypomi0dqkxj.lambda-url.ca-central-1.on.aws`,
-    {
-    method: "DELETE",
-    headers:{
-      "Content-Type": "application/json",
-      "email": profile.email,
-      "token": user.access_token,
-    },
-    body: JSON.stringify({email: profile.email, id: id})
-    }
+    const rev = await fetch(
+      `https://7upmz5bg24k365nnapxv7ypomi0dqkxj.lambda-url.ca-central-1.on.aws`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          email: profile.email,
+          token: user.access_token,
+        },
+        body: JSON.stringify({ email: profile.email, id: id }),
+      }
     );
-    if(rev.status === 200){
+    if (rev.status === 200) {
       setNotes([...notes.slice(0, index), ...notes.slice(index + 1)]);
       setCurrentNote(0);
       setEditMode(false);
@@ -114,52 +124,53 @@ function Layout({ logOut, profile, user }) {
     setCurrentNote(0);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     localStorage.setItem("username", JSON.stringify(user));
     localStorage.setItem("userProfile", JSON.stringify(profile));
   }, [user]);
 
-    return (
-      <div>
-        
-        <div id="container">
-          <header>
-            <aside>
-              <button id="menu-button" onClick={() => setCollapse(!collapse)}>
-                &#9776;
-              </button>
-            </aside>
-            <div id="app-header">
-              <h1>
-                <Link to="/notes">Lotion</Link>
-              </h1>
-              <h6 id="app-moto">Like Notion, but worse.</h6>
-            </div>
-            <aside>
-              <button onClick={logOut}><strong>{profile.name} (Log-out)</strong></button>
-            </aside>
-          </header>
-          <div id="main-container" ref={mainContainerRef}>
-            <aside id="sidebar" className={collapse ? "hidden" : null}>
-              <header>
-                <div id="notes-list-heading">
-                  <h2>Notes</h2>
-                  <button id="new-note-button" onClick={addNote}>
-                    +
-                  </button>
-                </div>
-              </header>
-              <div id="notes-holder">
-                <NoteList notes={notes} />
+  return (
+    <div>
+      <div id="container">
+        <header>
+          <aside>
+            <button id="menu-button" onClick={() => setCollapse(!collapse)}>
+              &#9776;
+            </button>
+          </aside>
+          <div id="app-header">
+            <h1>
+              <Link to="/notes">Lotion</Link>
+            </h1>
+            <h6 id="app-moto">Like Notion, but worse.</h6>
+          </div>
+          <aside>
+            <button onClick={logOut}>
+              <strong>{profile.name} (Log-out)</strong>
+            </button>
+          </aside>
+        </header>
+        <div id="main-container" ref={mainContainerRef}>
+          <aside id="sidebar" className={collapse ? "hidden" : null}>
+            <header>
+              <div id="notes-list-heading">
+                <h2>Notes</h2>
+                <button id="new-note-button" onClick={addNote}>
+                  +
+                </button>
               </div>
-            </aside>
-            <div id="write-box">
-              <Outlet context={[notes, saveNote, deleteNote]} />
+            </header>
+            <div id="notes-holder">
+              <NoteList notes={notes} />
             </div>
+          </aside>
+          <div id="write-box">
+            <Outlet context={[notes, saveNote, deleteNote]} />
           </div>
         </div>
       </div>
-    );
+    </div>
+  );
 }
 
 export default Layout;
