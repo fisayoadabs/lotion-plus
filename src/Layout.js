@@ -69,14 +69,14 @@ function Layout({ logOut, profile, user }) {
   };
 
   useEffect(() => {
-    const asyncEffect = async ()=>{
+    const getNoteEffect = async ()=>{
       if (profile.email){
         const rev = await fetch(`https://rszorazlzvi352fbcodo7geuzq0lwlve.lambda-url.ca-central-1.on.aws?email=${profile.email}`);
         const notes = await rev.json();
         setNotes(notes);
       }
     };
-    asyncEffect();
+    getNoteEffect();
   }, [profile.email]);
 
   const deleteNote = async (id, index) => {
@@ -92,10 +92,11 @@ function Layout({ logOut, profile, user }) {
     body: JSON.stringify({email: profile.email, id: id})
     }
     );
-    
-    setNotes([...notes.slice(0, index), ...notes.slice(index + 1)]);
-    setCurrentNote(0);
-    setEditMode(false);
+    if(rev.status === 200){
+      setNotes([...notes.slice(0, index), ...notes.slice(index + 1)]);
+      setCurrentNote(0);
+      setEditMode(false);
+    }
     console.log(rev.status);
   };
 
@@ -113,10 +114,11 @@ function Layout({ logOut, profile, user }) {
     setCurrentNote(0);
   };
 
+  useEffect(()=>{
+    localStorage.setItem("username", JSON.stringify(user));
+    localStorage.setItem("userProfile", JSON.stringify(profile));
+  }, [user]);
 
-
-  const storeName = localStorage.setItem("username", profile.name);
-  const userName = localStorage.getItem("username");
     return (
       <div>
         
@@ -134,7 +136,7 @@ function Layout({ logOut, profile, user }) {
               <h6 id="app-moto">Like Notion, but worse.</h6>
             </div>
             <aside>
-              <button onClick={logOut}><strong>{userName} (Log-out)</strong></button>
+              <button onClick={logOut}><strong>{profile.name} (Log-out)</strong></button>
             </aside>
           </header>
           <div id="main-container" ref={mainContainerRef}>

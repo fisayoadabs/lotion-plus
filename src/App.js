@@ -6,7 +6,7 @@ import Layout from "./Layout";
 
 function App() {
     const [ user, setUser ] = useState(null);
-    const [ profile, setProfile ] = useState(null);
+    const [ profile, setProfile ] = useState(JSON.parse(localStorage.getItem("userProfile")));
     const direct = useNavigate();
 
     const login = useGoogleLogin({
@@ -39,6 +39,8 @@ function App() {
         googleLogout();
         setProfile(null);
         direct(`/`, {replace:true});
+        localStorage.setItem("username", null);
+        localStorage.setItem("userProfile", null);
     };
   return (
       <div>
@@ -62,7 +64,7 @@ function App() {
                 </div>
                 <aside>&nbsp;</aside>
               </header>
-              <button id="sign-in" onClick={() => login()}>Sign in to Lotion with &#x0047;</button>
+            <button id="sign-in" onClick={() => login()}>Sign in to Lotion with <img src = "https://companieslogo.com/img/orig/GOOG-0ed88f7c.png?t=1633218227" height = "13px" width = "13px"/></button>
             </>
           )}
       </div>
