@@ -42,10 +42,12 @@ function WriteBox({ edit }) {
     );
   };
 
-  const tryDelete = () => {
+  const tryDelete = (id) => {
     const answer = window.confirm("Are you sure?");
     if (answer) {
-      deleteNote(noteId);
+      deleteNote(id,
+        noteId
+        );
     }
   };
 
@@ -88,7 +90,7 @@ function WriteBox({ edit }) {
                 className="button"
                 id="delete-button"
                 to=""
-                onClick={tryDelete}
+                onClick={() => tryDelete(currentNote.id)}
               >
                 Delete
               </Link>
@@ -102,7 +104,7 @@ function WriteBox({ edit }) {
                 className="button"
                 id="delete-button"
                 to=""
-                onClick={tryDelete}
+                onClick={() => tryDelete(currentNote.id)}
               >
                 Delete
               </Link>

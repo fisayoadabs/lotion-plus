@@ -68,10 +68,36 @@ function Layout({ logOut, profile, user }) {
     // console.log(jsonRes)
   };
 
-  const deleteNote = (index) => {
-    setNotes([...notes.slice(0, index), ...notes.slice(index + 1)]);
-    setCurrentNote(0);
-    setEditMode(false);
+  useEffect(() => {
+    const asyncEffect = async ()=>{
+      if (profile.email){
+        const rev = await fetch(`https://rszorazlzvi352fbcodo7geuzq0lwlve.lambda-url.ca-central-1.on.aws?email=${profile.email}`);
+        const notes = await rev.json();
+        setNotes(notes);
+      }
+    };
+    asyncEffect();
+  }, [profile.email]);
+
+  const deleteNote = async (id, index) => {
+    
+    const rev = await fetch(`https://7upmz5bg24k365nnapxv7ypomi0dqkxj.lambda-url.ca-central-1.on.aws?email=${profile.email}&id=${id}`,
+    {
+    method: "DELETE",
+    headers:{
+      "Content-Type": "application/json",
+      "email": profile.email,
+      "token": user.access_token,
+    },
+    
+    }
+    );
+    if( rev.status === 200){
+      setNotes([...notes.slice(0, index), ...notes.slice(index + 1)]);
+      setCurrentNote(0);
+      setEditMode(false);
+    }
+    console.log(rev.status);
   };
 
   const addNote = () => {
