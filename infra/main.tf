@@ -7,10 +7,14 @@ terraform {
   }
 }
 
+
+
 # specify the provider region
 provider "aws" {
   region = "ca-central-1"
 }
+
+
 
 resource "aws_dynamodb_table" "notes-30141921" {
   name         = "notes-30141921"
@@ -39,6 +43,8 @@ resource "aws_dynamodb_table" "notes-30141921" {
   }
 }
 
+
+
 # local names for all three functions
 locals {
   save_note_function   = "save-note-30141541"
@@ -51,6 +57,7 @@ locals {
   get_notes_artifact   = "../functions/get-notes/artifact.zip"
   delete_note_artifact = "../functions/delete-note/artifact.zip"
 }
+
 
 
 #Create an IAM role for all three functions
@@ -111,9 +118,7 @@ resource "aws_iam_role_policy_attachment" "lambda_logs" {
 
 
 
-
 #Creating the 3 archive files from the 3 main.py files
-###QUESTION: How do i get to the main.py file that's in the functions folder?
 data "archive_file" "archive_save_note" {
   type        = "zip"
   source_file = "../functions/save-note/main.py"
@@ -131,7 +136,6 @@ data "archive_file" "archive_delete_note" {
   source_file = "../functions/delete-note/main.py"
   output_path = local.delete_note_artifact
 }
-
 
 
 
